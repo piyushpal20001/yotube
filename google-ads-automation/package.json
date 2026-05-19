@@ -1,0 +1,10 @@
+{
+  "name": "google-ads-automation-root",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "start npm run dev:server & start npm run dev:client",
+    "install:all": "cd server && npm install && cd ../client && npm install"
+  }
+}

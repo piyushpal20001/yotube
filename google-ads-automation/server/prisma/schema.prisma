@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id               String            @id @default(uuid())
+  email            String            @unique
+  password         String?
+  name             String?
+  role             String            @default("USER")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  googleTokens     GoogleToken[]
+  googleAdsAccounts GoogleAdsAccount[]
+}
+
+model GoogleToken {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
+  accessToken  String
+  refreshToken String
+  expiryDate   DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model GoogleAdsAccount {
+  id              String     @id @default(uuid())
+  userId          String
+  user            User       @relation(fields: [userId], references: [id])
+  customerId      String     @unique
+  descriptiveName String?
+  isManager       Boolean    @default(false)
+  managerId       String?
+  campaigns       Campaign[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Campaign {
+  id               String           @id @default(uuid())
+  googleCampaignId String           @unique
+  name             String
+  status           String
+  budgetMicros     BigInt
+  accountId        String
+  account          GoogleAdsAccount @relation(fields: [accountId], references: [id])
+  adGroups         AdGroup[]
+  createdAt        DateTime         @default(now())
+}
+
+model AdGroup {
+  id              String   @id @default(uuid())
+  googleAdGroupId String   @unique
+  name            String
+  status          String
+  campaignId      String
+  campaign        Campaign @relation(fields: [campaignId], references: [id])
+  ads             Ad[]
+  keywords        Keyword[]
+  createdAt       DateTime @default(now())
+}
+
+model Keyword {
+  id              String   @id @default(uuid())
+  googleKeywordId String?  @unique
+  text            String
+  matchType       String
+  adGroupId       String
+  adGroup         AdGroup  @relation(fields: [adGroupId], references: [id])
+  createdAt       DateTime @default(now())
+}
+
+model Ad {
+  id          String   @id @default(uuid())
+  googleAdId  String?  @unique
+  headline    String
+  description String
+  mediaUrl    String?
+  adGroupId   String
+  adGroup     AdGroup  @relation(fields: [adGroupId], references: [id])
+  leads       Lead[]
+  createdAt   DateTime @default(now())
+}
+
+model Lead {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String
+  adId      String?
+  ad        Ad?      @relation(fields: [adId], references: [id])
+  createdAt DateTime @default(now())
+}
