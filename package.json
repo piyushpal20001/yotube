@@ -1,32 +1,10 @@
 {
-  "name": "yotube",
+  "name": "google-ads-automation-root",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "@prisma/client": "^7.8.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "google-ads-api": "^23.0.0",
-    "helmet": "^8.1.0",
-    "jsonwebtoken": "^9.0.3",
-    "pg": "^8.20.0",
-    "prisma": "^7.8.0"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^25.8.0",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^6.0.3"
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "start npm run dev:server & start npm run dev:client",
+    "install:all": "cd server && npm install && cd ../client && npm install"
   }
 }
